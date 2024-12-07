@@ -27,6 +27,7 @@ require("lazy").setup({
       {"mrcjkb/rustaceanvim"},
       {"hrsh7th/nvim-cmp"},
       {"hrsh7th/cmp-nvim-lsp"},
+      {"L3MON4D3/LuaSnip"}
 
   },
   -- Configure any other settings here. See the documentation for more details.
@@ -74,7 +75,10 @@ vim.diagnostic.config({
 
 -- Show line diagnostics automatically in hover window
 vim.o.updatetime = 250
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+-- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>lua vim.diagnostic.open_float(nil, {focus=false})<CR>', { noremap = true, silent = true })
+
+
 
 -- Force gutter to always render
 vim.o.rnu=true
@@ -83,3 +87,15 @@ vim.o.signcolumn="yes"
 -- Custom
 vim.opt.relativenumber = true
 vim.opt.number = true
+
+
+vim.keymap.set('i', ';;', function()
+    vim.b.cmp_enabled = not vim.b.cmp_enabled
+    require('cmp').setup.buffer { enabled = vim.b.cmp_enabled }
+    if vim.b.cmp_enabled then
+        vim.cmd('echo "cmd turned on"')
+    else
+        vim.cmd('echo "cmd turned off"')
+    end
+end, { noremap = true, silent = true })
+
